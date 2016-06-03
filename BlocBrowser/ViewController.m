@@ -67,6 +67,7 @@
         [mainView addSubview:viewToAdd];
     }
     self.view = mainView;
+    
 }
 
 - (void)viewDidLoad {
@@ -75,7 +76,7 @@
     
     self.activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.activityIndicator];
-
+    
 }
 
 - (void) viewWillLayoutSubviews {
@@ -97,6 +98,19 @@
         thisButton.frame = CGRectMake(currentButtonX, CGRectGetMaxY(self.webView.frame), buttonWidth, itemHeight);
         currentButtonX += buttonWidth;
     }
+}
+
+- (void) viewDidAppear:(BOOL)animated {
+    
+    UIAlertController *welcomeMessage = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Welcome!", @"Welcome!")
+                                                                            message:@"Enjoy using BlocBrowser!"
+                                                                     preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
+    
+    [welcomeMessage addAction:okAction];
+    
+    [self presentViewController:welcomeMessage animated:YES completion:nil];
 }
 
 #pragma mark - UITextFieldDelegate
