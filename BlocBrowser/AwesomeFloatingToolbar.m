@@ -16,6 +16,7 @@
 @property (nonatomic, weak) UILabel *currentLabel;
 @property (nonatomic, strong) UITapGestureRecognizer *tapGesture;
 @property (nonatomic, strong) UIPanGestureRecognizer *panGesture;
+@property (nonatomic, strong) UIPinchGestureRecognizer *pinchGesture;
 
 @end
 
@@ -76,6 +77,9 @@
         
         self.panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panFired:)];
         [self addGestureRecognizer:self.panGesture];
+        
+        self.pinchGesture = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(pinchFired:)];
+        [self addGestureRecognizer:self.pinchGesture];
     }
     
     return self;
@@ -105,6 +109,39 @@
         }
         
         [recognizer setTranslation:CGPointZero inView:self];
+    }
+}
+
+- (void) pinchFired:(UIPinchGestureRecognizer *)recognizer {
+    if (recognizer.state == UIGestureRecognizerStateChanged) {
+        CGFloat scale = recognizer.scale;
+        
+        NSLog(@"Pinch scale: %f", scale);
+        
+        if ([self.delegate respondsToSelector:@selector(floatingToolbar:didTryToPinchWithScale:)]) {
+            [self.delegate floatingToolbar:self didTryToPinchWithScale:scale];
+        }
+    }
+}
+
+- (void) longPressFired:(UILongPressGestureRecognizer *)recognizer {
+    if (recognizer.state == UIGestureRecognizerStateRecognized) {
+        
+        //NSUInteger randomInteger = arc4random_uniform(4);
+        
+        NSMutableArray *mutableColors = [NSMutableArray arrayWithArray:self.colors];
+        NSUInteger count = [mutableColors count];
+           for(NSUInteger i = count - 1; i > 0; --i){
+                [mutableColors exchangeObjectAtIndex:i withObjectAtIndex:arc4random_uniform((int32_t)(i+1))];
+           }
+        
+        // C method to generate a random number:
+        // int randomInt = arc4random(4);
+        // do some magic to rearrange the colors array
+        
+        for (int i = 0 ; i < self.labels.count; i++) {
+            [self.labels[i] setBackgroundColor:mutableColors[i]];
+        }
     }
 }
 

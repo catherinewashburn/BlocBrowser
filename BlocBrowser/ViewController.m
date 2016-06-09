@@ -59,6 +59,7 @@
     
     self.activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.activityIndicator];
+    self.awesomeToolbar.frame = CGRectMake(20, 100, 280, 60);
 
 }
 
@@ -73,7 +74,6 @@
     // Now, assign the frames
     self.textField.frame = CGRectMake(0, 0, width, itemHeight);
     self.webView.frame = CGRectMake(0, CGRectGetMaxY(self.textField.frame), width, browserHeight);
-    self.awesomeToolbar.frame = CGRectMake(20, 100, 280, 60);
 
 }
 
@@ -96,6 +96,18 @@
     CGPoint newPoint = CGPointMake(startingPoint.x + offset.x, startingPoint.y + offset.y);
     
     CGRect potentialNewFrame = CGRectMake(newPoint.x, newPoint.y, CGRectGetWidth(toolbar.frame), CGRectGetHeight(toolbar.frame));
+    
+    if (CGRectContainsRect(self.view.bounds, potentialNewFrame)) {
+        toolbar.frame = potentialNewFrame;
+    }
+}
+
+- (void) floatingToolbar:(AwesomeFloatingToolbar *)toolbar didTryToPinchWithScale:(CGFloat)scale {
+    CGPoint startingPoint = toolbar.frame.origin;
+    CGFloat newToolbarHeight = CGRectGetHeight(toolbar.frame) * scale;
+    CGFloat newToolbarWidth = CGRectGetWidth(toolbar.frame) * scale;
+    
+    CGRect potentialNewFrame = CGRectMake(startingPoint.x, startingPoint.y, newToolbarWidth, newToolbarHeight);
     
     if (CGRectContainsRect(self.view.bounds, potentialNewFrame)) {
         toolbar.frame = potentialNewFrame;
