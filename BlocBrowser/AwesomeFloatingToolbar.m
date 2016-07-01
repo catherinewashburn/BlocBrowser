@@ -73,7 +73,7 @@
         // #1
         //self.tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapFired:)];
         // #2
-        [self addGestureRecognizer:self.tapGesture];
+//        [self addGestureRecognizer:self.tapGesture];
         
         self.panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panFired:)];
         [self addGestureRecognizer:self.panGesture];
